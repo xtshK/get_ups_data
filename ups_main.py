@@ -164,13 +164,13 @@ def main():
     print("===============================")
     
     # Get user input
-    device_url = input("Enter the PowerDevice Manager URL (e.g., http://192.168.1.100): ")
-    username = input("Enter your username: ")
-    password = getpass.getpass("Enter your password: ")
+    device_url = "http://172.21.3.11/cgi-bin/dnpower.cgi?page=42&"
+    username = "admin"
+    password = "misadmin"
     
     # Option for direct HTML input if login doesn't work
-    use_html = input("Do you want to: \n1. Try to login and scrape automatically\n2. Enter HTML manually\nChoose (1/2): ")
-    
+    use_html = "2"
+
     if use_html == "1":
         # Try automatic login and scraping
         session = login_to_power_device(device_url, username, password)
@@ -189,16 +189,9 @@ def main():
         save_to_csv(data)
         
     elif use_html == "2":
-        # Manual HTML input option
-        print("\nPlease copy the HTML source of the page with the data table.")
-        print("Instructions:")
-        print("1. In your browser, navigate to the Data Log page")
-        print("2. Right-click and select 'View Page Source' or press Ctrl+U")
-        print("3. Copy the entire HTML content")
-        print("4. Paste it here and press Enter twice when done\n")
-        
+
         html_content = ""
-        print("Paste HTML here (press Enter twice when done):")
+        
         while True:
             line = input()
             if line == "":
