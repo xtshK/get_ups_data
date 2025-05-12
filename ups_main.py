@@ -2,10 +2,10 @@ import requests
 from bs4 import BeautifulSoup
 import csv
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # get html content
-def get_html_content(url,username,password):
+def get_html_content(url,username,password, targer_hour,target_mins, time_range):
     responde = requests.get(url,auth=(username,password))
     soup = BeautifulSoup(responde.content, 'html.parser')
         
@@ -14,6 +14,8 @@ def get_html_content(url,username,password):
         
         # Find all tables in the page
     tables = soup.find_all('table')
+
+    target_time = datetime.strptime(f"{targer_hour}:{target_mins}","%H:%M")
         
         # Look for a table that has our expected data
     for table in tables:
@@ -34,10 +36,20 @@ def get_html_content(url,username,password):
                 for row in rows:
                     cells = row.find_all('td')
                     if len(cells) >= len(expected_headers):
-                        row_data = {}
-                        for i, header in enumerate(expected_headers[:len(cells)]):
-                            row_data[header] = cells[i].text.strip()
-                        data.append(row_data)
+                        time_str = cells[1].text.strip()
+
+                        try:
+                            row_time = datetime.strptime(time_str, "%H:%M:%S")
+                            time_diff = abs((row_time - target_time)).total_seconds()/60
+
+                            if time_diff <=time_range:
+                                row_data = {}
+
+                                for i, header in enumerate(expected_headers[:len(cells)]):
+                                    row_data[header] = cells[i].text.strip()
+                                data.append(row_data)
+                        except ValueError:
+                            print(f"Skipping invalid time format: {time_str}")
                 
                 return data
         
@@ -45,6 +57,7 @@ def get_html_content(url,username,password):
     return None
 
 def save_to_csv(data, filename=None):
+
     """Save the extracted data to a CSV file"""
     if not data:
         print("No data to save")
@@ -52,7 +65,7 @@ def save_to_csv(data, filename=None):
     
     if not filename:
         # Generate a filename with timestamp
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        timestamp = datetime.now().strftime("%Y%m%d%H%M")
         filename = f"ups_data_{timestamp}.csv"
     
     try:
@@ -76,15 +89,32 @@ def save_to_csv(data, filename=None):
         print(f"Error saving data to CSV: {e}")
         return False
 
+
+
 if __name__ == "__main__":
     print("process running...")
-    ups_url = "http://172.21.4.10/cgi-bin/dnpower.cgi?page=42&"
+
+    ups_urls = [
+        "http://172.21.3.11/cgi-bin/dnpower.cgi?page=42&",
+        "http://172.21.4.10/cgi-bin/dnpower.cgi?page=42&",
+        "http://172.21.6.10/cgi-bin/dnpower.cgi?page=42&",
+        "http://172.21.5.14/cgi-bin/dnpower.cgi?page=42&"
+    ]
     ups_username = "admin"
     ups_password = "misadmin"
 
-    data = get_html_content(ups_url,ups_username,ups_password)
+    # target time
+    ups_target_hour = 8
+    ups_target_mins = 0
+    ups_time_range = 45
 
-    if data:
-        save_to_csv(data)
-    else:
-        print("save_to_csv run failed.")
+    for idx, ups_url in enumerate(ups_urls,start=1):
+        data = get_html_content(ups_url,ups_username,ups_password, ups_target_hour, ups_target_mins, ups_time_range)
+
+        if data:
+            timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+            filename = f"ups_filtered_{idx}_{timestamp}.csv"
+            save_to_csv(data, filename)
+
+        else:
+            print(f"No data found around {ups_target_hour}:{ups_target_mins:02d} ± {ups_time_range} mins at URL {idx}.")
