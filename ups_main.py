@@ -3,35 +3,20 @@ from bs4 import BeautifulSoup
 import csv
 import pandas as pd
 from datetime import datetime
-import time
-import re
 
-def get_current_time():
-    """Get the current time in a readable format"""
-    return datetime.now().strftime("%Y-%m-%d %H-%M-%S")
-
-CSV_FILE_PATH = f"ups_data_{get_current_time()}.csv"
-
-
-# Specify the path to your HTML file
-
-def extract_data_from_html_file(file_path):
-    """Extract data from a local HTML file"""
-    try:
-        with open(file_path, 'r', encoding='utf-8') as file:
-            html_content = file.read()
-        
-        # Parse the HTML content
-        soup = BeautifulSoup(html_content, 'html.parser')
+# get html content
+def get_html_content(url,username,password):
+    responde = requests.get(url,auth=(username,password))
+    soup = BeautifulSoup(responde.content, 'html.parser')
         
         # Expected headers based on your screenshot
-        expected_headers = ['Date', 'Time', 'Vin', 'Vout', 'Vbat', 'Fin', 'Fout', 'Load', 'Temp']
+    expected_headers = ['Date', 'Time', 'Vin', 'Vout', 'Vbat', 'Fin', 'Fout', 'Load', 'Temp']
         
         # Find all tables in the page
-        tables = soup.find_all('table')
+    tables = soup.find_all('table')
         
         # Look for a table that has our expected data
-        for table in tables:
+    for table in tables:
             first_row = table.find('tr')
             if not first_row:
                 continue
@@ -56,12 +41,8 @@ def extract_data_from_html_file(file_path):
                 
                 return data
         
-        print("Could not find the expected data table in the HTML file.")
-        return None
-        
-    except Exception as e:
-        print(f"Error reading or processing HTML file: {e}")
-        return None
+    print("Could not find the expected data table in the HTML file.")
+    return None
 
 def save_to_csv(data, filename=None):
     """Save the extracted data to a CSV file"""
@@ -72,7 +53,7 @@ def save_to_csv(data, filename=None):
     if not filename:
         # Generate a filename with timestamp
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"power_device_data_{timestamp}.csv"
+        filename = f"ups_data_{timestamp}.csv"
     
     try:
         # Get field names from the first item in the data
@@ -95,17 +76,15 @@ def save_to_csv(data, filename=None):
         print(f"Error saving data to CSV: {e}")
         return False
 
-# Direct execution - no user input needed
-print("PowerDevice Manager Data Scraper")
-print("===============================")
-print(f"Reading HTML file: {CSV_FILE_PATH}")
+if __name__ == "__main__":
+    print("process running...")
+    ups_url = "http://172.21.4.10/cgi-bin/dnpower.cgi?page=42&"
+    ups_username = "admin"
+    ups_password = "misadmin"
 
-# Extract data from the HTML file
-data = extract_data_from_html_file(CSV_FILE_PATH)
+    data = get_html_content(ups_url,ups_username,ups_password)
 
-if data:
-    print(f"Successfully extracted {len(data)} rows of data")
-    # Save to CSV
-    save_to_csv(data)
-else:
-    print("No data was extracted. Please check the HTML file.")
+    if data:
+        save_to_csv(data)
+    else:
+        print("save_to_csv run failed.")

@@ -15,4 +15,8 @@ username = "admin"
 responde = requests.get(url, auth=(username, password))
 soup = BeautifulSoup(responde.content, 'html.parser')
 
-print(soup.prettify())
+def get_current_time():
+    """Get the current time in a readable format"""
+    return datetime.now().strftime("%Y%m%d%H%M")
+
+CSV_FILE_PATH = f"ups_data_{get_current_time()}.csv"
