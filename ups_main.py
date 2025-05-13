@@ -51,7 +51,7 @@ def get_html_content(url,username,password, targer_hour,target_mins, time_range)
 
                         except ValueError:
                             print(f"Skipping invalid time format: {time_str}")
-                
+
                 return data
         
     print("Could not find the expected data table in the HTML file.")
