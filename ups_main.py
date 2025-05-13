@@ -48,6 +48,7 @@ def get_html_content(url,username,password, targer_hour,target_mins, time_range)
                                 for i, header in enumerate(expected_headers[:len(cells)]):
                                     row_data[header] = cells[i].text.strip()
                                 data.append(row_data)
+                                
                         except ValueError:
                             print(f"Skipping invalid time format: {time_str}")
                 
