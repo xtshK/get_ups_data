@@ -48,7 +48,7 @@ def get_html_content(url,username,password, targer_hour,target_mins, time_range)
                                 for i, header in enumerate(expected_headers[:len(cells)]):
                                     row_data[header] = cells[i].text.strip()
                                 data.append(row_data)
-                                
+
                         except ValueError:
                             print(f"Skipping invalid time format: {time_str}")
                 
@@ -95,27 +95,30 @@ def save_to_csv(data, filename=None):
 if __name__ == "__main__":
     print("process running...")
 
-    ups_urls = [
-        "http://172.21.3.11/cgi-bin/dnpower.cgi?page=42&",
-        "http://172.21.4.10/cgi-bin/dnpower.cgi?page=42&",
-        "http://172.21.6.10/cgi-bin/dnpower.cgi?page=42&",
-        "http://172.21.5.14/cgi-bin/dnpower.cgi?page=42&"
+    ups_list = [
+        {"name":"UPS_9F","url":"http://172.21.3.11/cgi-bin/dnpower.cgi?page=42&"},
+        {"name":"UPS_8F","url":"http://172.21.4.10/cgi-bin/dnpower.cgi?page=42&"},
+        {"name":"UPS_7F","url":"http://172.21.6.10/cgi-bin/dnpower.cgi?page=42&"},
+        {"name":"UPS_3F","url":"http://172.21.5.14/cgi-bin/dnpower.cgi?page=42&"}
     ]
     ups_username = "admin"
     ups_password = "misadmin"
 
     # target time
     ups_target_hour = 8
-    ups_target_mins = 0
+    ups_target_mins = 30
     ups_time_range = 45
 
-    for idx, ups_url in enumerate(ups_urls,start=1):
-        data = get_html_content(ups_url,ups_username,ups_password, ups_target_hour, ups_target_mins, ups_time_range)
+    for ups in ups_list:
+        ups_name = ups["name"]
+        url = ups["url"]
+
+        data = get_html_content(url,ups_username,ups_password, ups_target_hour, ups_target_mins, ups_time_range)
 
         if data:
-            timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-            filename = f"ups_filtered_{idx}_{timestamp}.csv"
+            timestamp = datetime.now().strftime("%Y%m%d")
+            filename = f"{ups_name}_{timestamp}_datalog.csv"
             save_to_csv(data, filename)
 
         else:
-            print(f"No data found around {ups_target_hour}:{ups_target_mins:02d} ± {ups_time_range} mins at URL {idx}.")
+            print(f"No matching data found for {ups_name} today.")
