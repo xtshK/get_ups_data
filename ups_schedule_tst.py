@@ -98,7 +98,7 @@ def scheduled_ups_job():
     print("process running...")
 
     ups_list = [
-        {"name":"UPS_9F","url":"http://172.21.3.11/cgi-bin/dnpower.cgi?adminpage=42&"},
+        {"name":"UPS_9F","url":"http://172.21.3.11/cgi-bin/dnpower.cgi?page=42&"},
         {"name":"UPS_8F","url":"http://172.21.4.10/cgi-bin/dnpower.cgi?page=42&"},
         {"name":"UPS_7F","url":"http://172.21.6.10/cgi-bin/dnpower.cgi?page=42&"},
         {"name":"UPS_3F","url":"http://172.21.5.14/cgi-bin/dnpower.cgi?page=42&"}

@@ -122,3 +122,4 @@ if __name__ == "__main__":
 
         else:
             print(f"No matching data found for {ups_name} today.")
+        print(data)
