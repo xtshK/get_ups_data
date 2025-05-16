@@ -107,7 +107,7 @@ def scheduled_ups_job():
     ups_password = "misadmin"
 
     # target time
-    ups_target_hour = 8
+    ups_target_hour = 15
     ups_target_mins = 30
     ups_time_range = 45
 
@@ -125,7 +125,7 @@ def scheduled_ups_job():
         else:
             print(f"No matching data found for {ups_name} today.")
 
-schedule.every().day.at("16:30").do(scheduled_ups_job)
+schedule.every().day.do(scheduled_ups_job)
 
 print("UPS Data Scheduler is running...")
 

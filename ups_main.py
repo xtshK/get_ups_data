@@ -105,7 +105,7 @@ if __name__ == "__main__":
     ups_password = "misadmin"
 
     # target time
-    ups_target_hour = 8
+    ups_target_hour = 15
     ups_target_mins = 30
     ups_time_range = 45
 
@@ -122,4 +122,3 @@ if __name__ == "__main__":
 
         else:
             print(f"No matching data found for {ups_name} today.")
-        print(data)
