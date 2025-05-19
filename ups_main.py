@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import os
 import csv
 import pandas as pd
 from datetime import datetime, timedelta
@@ -57,28 +58,29 @@ def get_html_content(url,username,password, targer_hour,target_mins, time_range)
     print("Could not find the expected data table in the HTML file.")
     return None
 
-def save_to_csv(data, filename=None):
+def save_to_csv(data, csv_filename=None):
+    
 
     """Save the extracted data to a CSV file"""
     if not data:
         print("No data to save")
         return False
     
-    if not filename:
+    if not csv_filename:
         # Generate a filename with timestamp
         timestamp = datetime.now().strftime("%Y%m%d%H%M")
-        filename = f"ups_data_{timestamp}.csv"
+        csv_filename = f"ups_data_{timestamp}.csv"
     
     try:
         # Get field names from the first item in the data
         fieldnames = data[0].keys()
         
-        with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
+        with open(csv_filename, 'w', newline='', encoding='utf-8') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
             writer.writerows(data)
         
-        print(f"Data successfully saved to {filename}")
+        print(f"Data successfully saved to {csv_filename}")
         
         # Create a pandas DataFrame and show a preview
         df = pd.DataFrame(data)
@@ -117,8 +119,8 @@ if __name__ == "__main__":
 
         if data:
             timestamp = datetime.now().strftime("%Y%m%d")
-            filename = f"{ups_name}_{timestamp}_datalog.csv"
-            save_to_csv(data, filename)
+            csv_filename = f"{ups_name}_{timestamp}_datalog.csv"
+            save_to_csv(data, csv_filename)
 
         else:
             print(f"No matching data found for {ups_name} today.")
