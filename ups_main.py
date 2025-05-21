@@ -7,8 +7,9 @@ from datetime import datetime, timedelta
 
 # get html content
 def get_html_content(url,username,password, targer_hour,target_mins, time_range):
-    responde = requests.get(url,auth=(username,password))
-    soup = BeautifulSoup(responde.content, 'html.parser')
+
+    response = requests.get(url,auth=(username,password))
+    soup = BeautifulSoup(response.content, 'html.parser')
         
         # Expected headers based on your screenshot
     expected_headers = ['Date', 'Time', 'Vin', 'Vout', 'Vbat', 'Fin', 'Fout', 'Load', 'Temp']
@@ -60,7 +61,7 @@ def get_html_content(url,username,password, targer_hour,target_mins, time_range)
 
 def save_to_csv(data, csv_filename=None):
     
-    
+
     """Save the extracted data to a CSV file"""
     if not data:
         print("No data to save")
