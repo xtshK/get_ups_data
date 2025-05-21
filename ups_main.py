@@ -88,6 +88,7 @@ def save_to_csv(data, csv_filename=None):
         print(df.head())
         
         return True
+    
     except Exception as e:
         print(f"Error saving data to CSV: {e}")
         return False

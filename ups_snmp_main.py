@@ -3,9 +3,9 @@ from azure.identity import ClientSecretCredential
 from azure.storage.filedatalake import DataLakeServiceClient
 
 # Load Azure AD credentials from environment (or configure directly in a secure manner)
-tenant_id = os.getenv("FABRIC_TENANT_ID")
-client_id = os.getenv("FABRIC_CLIENT_ID")
-client_secret = os.getenv("FABRIC_CLIENT_SECRET")
+tenant_id = os.getenv("19ad9686-f4fa-4178-ac0c-7c657c7b4509")
+client_id = os.getenv("fd710371-7f0d-4781-b6b0-9963c3eb3921")
+client_secret = os.getenv("BFO8Q~AhdwljFlbYVetO9ZMvCxbuaEeRkVbCWdu-")
 if not all([tenant_id, client_id, client_secret]):
     raise Exception("Please set FABRIC_TENANT_ID, FABRIC_CLIENT_ID, and FABRIC_CLIENT_SECRET environment variables.")
 
