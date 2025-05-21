@@ -60,7 +60,7 @@ def get_html_content(url,username,password, targer_hour,target_mins, time_range)
 
 def save_to_csv(data, csv_filename=None):
     
-
+    
     """Save the extracted data to a CSV file"""
     if not data:
         print("No data to save")
