@@ -66,33 +66,42 @@ def save_to_csv(data, csv_filename=None):
         print("No data to save")
         return False
     
+    onedrive_base_path = r'C:\Users\kuose\OneDrive - ViewSonic Corporation'  # Directly assign the path as a string
+    target_folder = os.path.join(onedrive_base_path, 'UPS_Datalog Upload')  # Use os.path.join to build the full path
+    
+    os.makedirs(target_folder, exist_ok=True) # Ensure the folder exists
+
+    # generate a filename with today's date
     if not csv_filename:
         # Generate a filename with timestamp
         timestamp = datetime.now().strftime("%Y%m%d%H%M")
         csv_filename = f"ups_data_{timestamp}.csv"
     
+    full_csv_path = os.path.join(target_folder, csv_filename)  # Full path for the CSV file
+
     try:
+        # Save data to CSV
+        df = pd.DataFrame(data)
+        df.to_csv(full_csv_path, index=False, encoding='utf-8')
+        print(f"CSV saved to {full_csv_path}")
+
+
+        '''
         # Get field names from the first item in the data
         fieldnames = data[0].keys()
-        
         with open(csv_filename, 'w', newline='', encoding='utf-8') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
             writer.writerows(data)
-        
-        print(f"Data successfully saved to {csv_filename}")
-        
-        # Create a pandas DataFrame and show a preview
-        df = pd.DataFrame(data)
+        '''
+
         print("\nData Preview:")
         print(df.head())
-        
         return True
     
     except Exception as e:
         print(f"Error saving data to CSV: {e}")
         return False
-
 
 
 if __name__ == "__main__":
@@ -102,13 +111,15 @@ if __name__ == "__main__":
         {"name":"UPS_9F","url":"http://172.21.3.11/cgi-bin/dnpower.cgi?page=42&"},
         {"name":"UPS_8F","url":"http://172.21.4.10/cgi-bin/dnpower.cgi?page=42&"},
         {"name":"UPS_7F","url":"http://172.21.6.10/cgi-bin/dnpower.cgi?page=42&"},
-        {"name":"UPS_3F","url":"http://172.21.5.14/cgi-bin/dnpower.cgi?page=42&"}
+        {"name":"UPS_3F","url":"http://172.21.5.14/cgi-bin/dnpower.cgi?page=42&"},
+        #{"mame":"UPS_10F","url":"http://172.21.2.13/DataLog.cgi"}
     ]
+
     ups_username = "admin"
     ups_password = "misadmin"
 
     # target time
-    ups_target_hour = 15
+    ups_target_hour = 13
     ups_target_mins = 30
     ups_time_range = 45
 
