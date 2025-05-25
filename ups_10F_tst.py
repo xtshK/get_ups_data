@@ -10,7 +10,24 @@ def get_html_content(url, username, password, target_hour, target_mins, time_ran
     response = requests.get(url,auth=(username,password))
     soup = BeautifulSoup(response.content, 'html.parser')
 
+    # columns = ["DateTime", "Vin", "Vout", "Freq", "Load", "Capacity", "BatteryVolt", "CellVolt", "Temp"] 10f default columns
+    # Theothers floor columns.
+    expected_headers = ['Date', 'Time', 'Vin', 'Vout', 'Vbat', 'Fin', 'Fout', 'Load', 'Temp']
+    container = soup.find("div",id = "myTab1_Content0")
+    
+    # Find all tables in the page
+    tables = container.find("tabel") if container else None
 
+    if not tables:
+        print("No data found in the specified table.")
+        return None
+
+    data = []
+
+    for tabel in tables:
+        first_row = tabel.find("tr")
+        if not first_row:
+            continue
 
 
 
