@@ -11,6 +11,18 @@ def get_html_content(url,username,password, targer_hour,target_mins, time_range)
         # Expected headers based on your screenshot
     expected_headers = ['Date', 'Time', 'Vin', 'Vout', 'Vbat', 'Fin', 'Fout', 'Load', 'Temp']
         
+    header_mapping = {
+    'Date': 'Date',
+    'Time': 'Time',
+    'Vin': 'Vin',
+    'Vout': 'Vout',
+    'Vbat': 'BatteryVolt',   # 轉換欄位
+    'Fin': 'Freq',
+    'Fout': 'Fout',
+    'Load': 'Load',
+    'Temp': 'Temp'
+    }
+
         # Find all tables in the page
     tables = soup.find_all('table')
 
@@ -45,7 +57,20 @@ def get_html_content(url,username,password, targer_hour,target_mins, time_range)
                                 row_data = {}
 
                                 for i, header in enumerate(expected_headers[:len(cells)]):
-                                    row_data[header] = cells[i].text.strip()
+                                        raw_value = cells[i].text.strip()
+                                        mapped_key = header_mapping.get(header, header)
+                                        row_data[mapped_key] = raw_value
+
+                                if 'Date' in row_data and 'Time' in row_data:
+                                    row_data['DateTime'] = f"{row_data['Date']} {row_data['Time']}"
+
+                                    del row_data['Date']  # 可選：移除原始 Date
+                                    del row_data['Time']  # 可選：移除原始 Time    
+                                    
+                                for col in ['Capacity', 'CellVolt']:
+                                    if col not in row_data:
+                                        row_data[col] = ""
+
                                 data.append(row_data)
 
                         except ValueError:

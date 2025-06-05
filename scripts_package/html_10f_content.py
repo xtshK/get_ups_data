@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
+from logger import logger
 
 def get_10f_data(url, username, password, target_hour, target_mins, tolerance_minutes=40):
     datalog_url = f"{url}/DataLog.cgi"
@@ -42,8 +43,7 @@ def get_10f_data(url, username, password, target_hour, target_mins, tolerance_mi
             if abs(row_dt - target_datetime) <= time_tolerance:
                 temp_c_part = cols[8].split(" ")[0].strip() if " " in cols[8] else cols[8]
                 temp_c_clean = ''.join(c for c in temp_c_part if c.isdigit() or c == '.')
-
-                log_data.append({
+                row_data = {
                     "DateTime": row_dt.strftime("%Y/%m/%d %H:%M:%S"),
                     "Vin": cols[1],
                     "Vout": cols[2],
@@ -53,8 +53,19 @@ def get_10f_data(url, username, password, target_hour, target_mins, tolerance_mi
                     "BatteryVolt": cols[6],
                     "CellVolt": cols[7],
                     "Temp": temp_c_clean
-                })
-        except ValueError:
+                }
+                log_data.append(row_data)
+
+        except ValueError as ve:
+            logger.warning(f"Row skipped due to time parsing error: {ve}")
+            continue
+        except Exception as e:
+            logger.error(f"Unexpected error while parsing 10F UPS row: {e}")
             continue
 
-    return log_data if log_data else None
+    if log_data:
+        logger.info(f"Found {len(log_data)} valid records from 10F UPS")
+        return log_data
+    else:
+        logger.info("No matching records found for 10F UPS in time range.")
+        return None
