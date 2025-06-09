@@ -1,0 +1,3 @@
+DateTime,Vin,Vout,Freq,Load,Capacity,BatteryVolt,CellVolt,Temp,ups_name
+06/09/2025 07:57:54,226,230,60.0,018,,272.8,,18,UPS_7F
+06/09/2025 08:57:55,224,230,59.9,019,,272.5,,19,UPS_7F
