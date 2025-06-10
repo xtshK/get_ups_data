@@ -36,3 +36,46 @@
 2025-06-10 22:21:35,336 - INFO - File uploaded to Dropbox: /ups_datalog/UPS_10F_20250610_datalog.csv
 2025-06-10 22:21:35,336 - INFO - UPS_10F: Uploaded to Dropbox \u2192 /ups_datalog/UPS_10F_20250610_datalog.csv
 2025-06-10 22:21:35,336 - INFO - All UPS data processing completed.
+2025-06-10 22:36:23,289 - INFO - \u2705 Found 23 records for 2025/06/10
+2025-06-10 22:36:36,368 - INFO - \u2705 Found 23 records for 2025/06/10
+2025-06-10 22:48:12,452 - INFO - UPS Data Scheduler started (manual run)
+2025-06-10 22:48:12,453 - INFO - Processing started for UPS_9F
+2025-06-10 22:48:12,661 - WARNING - UPS_9F: No matching data found in the specified time range.
+2025-06-10 22:48:12,661 - INFO - Processing started for UPS_8F
+2025-06-10 22:48:13,000 - WARNING - UPS_8F: No matching data found in the specified time range.
+2025-06-10 22:48:13,000 - INFO - Processing started for UPS_7F
+2025-06-10 22:48:13,383 - WARNING - UPS_7F: No matching data found in the specified time range.
+2025-06-10 22:48:13,384 - INFO - Processing started for UPS_3F
+2025-06-10 22:48:13,772 - INFO - CSV saved to C:\Users\kuose\ViewSonic Dropbox\Selena Kuo\Code\Python\03_it_proj_ups\get_ups_data\temp_csv\UPS_3F_20250610_datalog.csv
+2025-06-10 22:48:13,774 - INFO - UPS_3F: CSV saved successfully \u2192 C:\Users\kuose\ViewSonic Dropbox\Selena Kuo\Code\Python\03_it_proj_ups\get_ups_data\temp_csv\UPS_3F_20250610_datalog.csv
+2025-06-10 22:48:14,187 - INFO - Dropbox token refreshed successfully.
+2025-06-10 22:48:14,188 - INFO - Request to files/upload
+2025-06-10 22:48:15,934 - INFO - File uploaded to Dropbox: /ups_datalog/UPS_3F_20250610_datalog.csv
+2025-06-10 22:48:15,935 - INFO - UPS_3F: Uploaded to Dropbox \u2192 /ups_datalog/UPS_3F_20250610_datalog.csv
+2025-06-10 22:48:15,935 - INFO - Processing started for UPS_10F
+2025-06-10 22:48:15,935 - ERROR - UPS_10F: Failed to fetch data - get_10f_data() takes 4 positional arguments but 6 were given
+2025-06-10 22:48:15,936 - INFO - All UPS data processing completed.
+2025-06-10 22:52:12,479 - INFO - UPS Data Scheduler started (manual run)
+2025-06-10 22:52:12,479 - INFO - Processing started for UPS_9F
+2025-06-10 22:52:12,479 - ERROR - UPS_9F: Failed to fetch data - module 'config' has no attribute 'FETCH_WHOLE_DAY'
+2025-06-10 22:52:12,479 - INFO - Processing started for UPS_8F
+2025-06-10 22:52:12,479 - ERROR - UPS_8F: Failed to fetch data - module 'config' has no attribute 'FETCH_WHOLE_DAY'
+2025-06-10 22:52:12,479 - INFO - Processing started for UPS_7F
+2025-06-10 22:52:12,479 - ERROR - UPS_7F: Failed to fetch data - module 'config' has no attribute 'FETCH_WHOLE_DAY'
+2025-06-10 22:52:12,479 - INFO - Processing started for UPS_3F
+2025-06-10 22:52:12,479 - ERROR - UPS_3F: Failed to fetch data - module 'config' has no attribute 'FETCH_WHOLE_DAY'
+2025-06-10 22:52:12,479 - INFO - Processing started for UPS_10F
+2025-06-10 22:52:12,479 - ERROR - UPS_10F: Failed to fetch data - get_10f_data() takes 4 positional arguments but 6 were given
+2025-06-10 22:52:12,479 - INFO - All UPS data processing completed.
+2025-06-10 22:53:04,290 - INFO - UPS Data Scheduler started (manual run)
+2025-06-10 22:53:04,291 - INFO - Processing started for UPS_9F
+2025-06-10 22:53:04,291 - ERROR - UPS_9F: Failed to fetch data - get_10f_data() got an unexpected keyword argument 'fetch_whole_day'
+2025-06-10 22:53:04,291 - INFO - Processing started for UPS_8F
+2025-06-10 22:53:04,291 - ERROR - UPS_8F: Failed to fetch data - get_10f_data() got an unexpected keyword argument 'fetch_whole_day'
+2025-06-10 22:53:04,291 - INFO - Processing started for UPS_7F
+2025-06-10 22:53:04,291 - ERROR - UPS_7F: Failed to fetch data - get_10f_data() got an unexpected keyword argument 'fetch_whole_day'
+2025-06-10 22:53:04,291 - INFO - Processing started for UPS_3F
+2025-06-10 22:53:04,291 - ERROR - UPS_3F: Failed to fetch data - get_10f_data() got an unexpected keyword argument 'fetch_whole_day'
+2025-06-10 22:53:04,291 - INFO - Processing started for UPS_10F
+2025-06-10 22:53:04,291 - ERROR - UPS_10F: Failed to fetch data - get_10f_data() takes 4 positional arguments but 6 were given
+2025-06-10 22:53:04,291 - INFO - All UPS data processing completed.
