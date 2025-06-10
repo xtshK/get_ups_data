@@ -75,7 +75,7 @@ def save_to_csv(data, csv_filename=None):
             cols = df.columns.tolist()
             cols.insert(0, cols.pop(cols.index("DateTime")))
             df = df[cols]
-            
+
         if "Load" in df.columns:
             df["Load"] = df["Load"].astype(str).str.lstrip("0")
 
@@ -99,7 +99,7 @@ if __name__ == "__main__":
         {"name":"UPS_8F","url":"http://172.21.4.10/cgi-bin/dnpower.cgi?page=42&"},
         {"name":"UPS_7F","url":"http://172.21.6.10/cgi-bin/dnpower.cgi?page=42&"},
         {"name":"UPS_3F","url":"http://172.21.5.14/cgi-bin/dnpower.cgi?page=42&"},
-        #{"mame":"UPS_10F","url":"http://172.21.2.13/DataLog.cgi"}
+        {"mame":"UPS_10F","url":"http://172.21.2.13/DataLog.cgi"}
     ]
 
     ups_username = "admin"

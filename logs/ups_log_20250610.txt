@@ -80,3 +80,27 @@
 2025-06-10 22:53:04,291 - ERROR - UPS_10F: Failed to fetch data - get_10f_data() takes 4 positional arguments but 6 were given
 2025-06-10 22:53:04,291 - INFO - All UPS data processing completed.
 2025-06-10 22:55:39,528 - INFO - \u2705 Found 23 records for 2025/06/10
+2025-06-10 23:10:57,306 - INFO - UPS Data Scheduler started (manual run)
+2025-06-10 23:10:57,306 - INFO - Processing started for UPS_9F
+2025-06-10 23:10:57,484 - WARNING - UPS_9F: No matching data found in the specified time range.
+2025-06-10 23:10:57,484 - INFO - Processing started for UPS_8F
+2025-06-10 23:10:57,659 - WARNING - UPS_8F: No matching data found in the specified time range.
+2025-06-10 23:10:57,659 - INFO - Processing started for UPS_7F
+2025-06-10 23:10:57,845 - WARNING - UPS_7F: No matching data found in the specified time range.
+2025-06-10 23:10:57,846 - INFO - Processing started for UPS_3F
+2025-06-10 23:10:58,039 - INFO - CSV saved to C:\Users\kuose\ViewSonic Dropbox\Selena Kuo\Code\Python\03_it_proj_ups\get_ups_data\temp_csv\UPS_3F_20250610_datalog.csv
+2025-06-10 23:10:58,041 - INFO - UPS_3F: CSV saved successfully \u2192 C:\Users\kuose\ViewSonic Dropbox\Selena Kuo\Code\Python\03_it_proj_ups\get_ups_data\temp_csv\UPS_3F_20250610_datalog.csv
+2025-06-10 23:10:58,387 - INFO - Dropbox token refreshed successfully.
+2025-06-10 23:10:58,390 - INFO - Request to files/upload
+2025-06-10 23:10:59,593 - INFO - File uploaded to Dropbox: /ups_datalog/UPS_3F_20250610_datalog.csv
+2025-06-10 23:10:59,593 - INFO - UPS_3F: Uploaded to Dropbox \u2192 /ups_datalog/UPS_3F_20250610_datalog.csv
+2025-06-10 23:10:59,593 - INFO - Processing started for UPS_10F
+2025-06-10 23:11:00,169 - WARNING - Row skipped due to time parsing error: time data 'Date/Time' does not match format '%Y/%m/%d %H:%M:%S'
+2025-06-10 23:11:00,170 - INFO - Found 1 valid records from 10F UPS
+2025-06-10 23:11:00,172 - INFO - CSV saved to C:\Users\kuose\ViewSonic Dropbox\Selena Kuo\Code\Python\03_it_proj_ups\get_ups_data\temp_csv\UPS_10F_20250610_datalog.csv
+2025-06-10 23:11:00,173 - INFO - UPS_10F: CSV saved successfully \u2192 C:\Users\kuose\ViewSonic Dropbox\Selena Kuo\Code\Python\03_it_proj_ups\get_ups_data\temp_csv\UPS_10F_20250610_datalog.csv
+2025-06-10 23:11:00,504 - INFO - Dropbox token refreshed successfully.
+2025-06-10 23:11:00,505 - INFO - Request to files/upload
+2025-06-10 23:11:01,487 - INFO - File uploaded to Dropbox: /ups_datalog/UPS_10F_20250610_datalog.csv
+2025-06-10 23:11:01,488 - INFO - UPS_10F: Uploaded to Dropbox \u2192 /ups_datalog/UPS_10F_20250610_datalog.csv
+2025-06-10 23:11:01,488 - INFO - All UPS data processing completed.
