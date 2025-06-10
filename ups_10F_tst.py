@@ -60,6 +60,7 @@ if __name__ == "__main__":
     data = get_html_content(url, username, password, target_date)
 
     if data:
+        
         print(f"✅ Total rows for {target_date}: {len(data)}")
         for row in data[:30]:  # 預覽前 3 筆
             print(row)
