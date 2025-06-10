@@ -6,100 +6,86 @@ import pandas as pd
 from datetime import datetime, timedelta
 
 # get html content
-def get_html_content(url,username,password, targer_hour,target_mins, time_range):
-
-    response = requests.get(url,auth=(username,password))
+def get_html_content(url, username, password, *_):
+    response = requests.get(url, auth=(username, password))
     soup = BeautifulSoup(response.content, 'html.parser')
-        
-        # Expected headers based on your screenshot
+
     expected_headers = ['Date', 'Time', 'Vin', 'Vout', 'Vbat', 'Fin', 'Fout', 'Load', 'Temp']
-        
-        # Find all tables in the page
     tables = soup.find_all('table')
 
-    target_time = datetime.strptime(f"{targer_hour}:{target_mins}","%H:%M")
-        
-        # Look for a table that has our expected data
     for table in tables:
-            first_row = table.find('tr')
-            if not first_row:
-                continue
-                
-            # Check header cells
-            header_cells = first_row.find_all(['th', 'td'])
-            headers = [cell.text.strip() for cell in header_cells]
-            
-            # Check if this table has headers that match what we expect
-            if any(expected in headers for expected in expected_headers):
-                # Found the right table, now extract data
-                data = []
-                rows = table.find_all('tr')[1:]  # Skip header row
-                
-                for row in rows:
-                    cells = row.find_all('td')
-                    if len(cells) >= len(expected_headers):
-                        time_str = cells[1].text.strip()
+        first_row = table.find('tr')
+        if not first_row:
+            continue
 
-                        try:
-                            row_time = datetime.strptime(time_str, "%H:%M:%S")
-                            time_diff = abs((row_time - target_time)).total_seconds()/60
+        header_cells = first_row.find_all(['th', 'td'])
+        headers = [cell.text.strip() for cell in header_cells]
 
-                            if time_diff <=time_range:
-                                row_data = {}
+        if any(expected in headers for expected in expected_headers):
+            data = []
+            rows = table.find_all('tr')[1:]
 
-                                for i, header in enumerate(expected_headers[:len(cells)]):
-                                    row_data[header] = cells[i].text.strip()
-                                data.append(row_data)
+            for row in rows:
+                cells = row.find_all('td')
+                if len(cells) >= len(expected_headers):
+                    try:
+                        row_data = {}
+                        for i, header in enumerate(expected_headers[:len(cells)]):
+                            row_data[header] = cells[i].text.strip()
 
-                        except ValueError:
-                            print(f"Skipping invalid time format: {time_str}")
+                        if 'Date' in row_data and 'Time' in row_data:
+                            row_data['DateTime'] = f"{row_data['Date']} {row_data['Time']}"
+                            del row_data['Date']
+                            del row_data['Time']
 
-                return data
-        
-    print("Could not find the expected data table in the HTML file.")
+                        for col in ['Capacity', 'CellVolt']:
+                            if col not in row_data:
+                                row_data[col] = ""
+
+                        data.append(row_data)
+                    except Exception as e:
+                        print(f"Skipping row due to error: {e}")
+            return data
+
+    print("Could not find expected data table in HTML.")
     return None
 
-def save_to_csv(data, csv_filename=None):
-    
 
+def save_to_csv(data, csv_filename=None):
     """Save the extracted data to a CSV file"""
     if not data:
         print("No data to save")
         return False
     
-    onedrive_base_path = r'C:\Users\kuose\OneDrive - ViewSonic Corporation'  # Directly assign the path as a string
-    target_folder = os.path.join(onedrive_base_path, 'UPS_Datalog Upload')  # Use os.path.join to build the full path
-    
-    os.makedirs(target_folder, exist_ok=True) # Ensure the folder exists
+    onedrive_base_path = r'C:\Users\kuose\OneDrive - ViewSonic Corporation'
+    target_folder = os.path.join(onedrive_base_path, 'UPS_Datalog Upload')
+    os.makedirs(target_folder, exist_ok=True)
 
-    # generate a filename with today's date
     if not csv_filename:
-        # Generate a filename with timestamp
         timestamp = datetime.now().strftime("%Y%m%d%H%M")
         csv_filename = f"ups_data_{timestamp}.csv"
     
-    full_csv_path = os.path.join(target_folder, csv_filename)  # Full path for the CSV file
+    full_csv_path = os.path.join(target_folder, csv_filename)
 
     try:
-        # Save data to CSV
         df = pd.DataFrame(data)
+
+        # ✅ 將 DateTime 欄位移到第一欄
+        if "DateTime" in df.columns:
+            cols = df.columns.tolist()
+            cols.insert(0, cols.pop(cols.index("DateTime")))
+            df = df[cols]
+            
+        if "Load" in df.columns:
+            df["Load"] = df["Load"].astype(str).str.lstrip("0")
+
         df.to_csv(full_csv_path, index=False, encoding='utf-8')
         print(f"CSV saved to {full_csv_path}")
-
-
-        '''
-        # Get field names from the first item in the data
-        fieldnames = data[0].keys()
-        with open(csv_filename, 'w', newline='', encoding='utf-8') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(data)
-        '''
 
         print("\nData Preview:")
         print(df.head())
         return True
-    
+
     except Exception as e:
         print(f"Error saving data to CSV: {e}")
         return False
