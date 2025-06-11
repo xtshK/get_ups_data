@@ -39,7 +39,7 @@ def get_10f_data(url, username, password, target_hour, target_mins, tolerance_mi
         if len(cols) < 9:
             continue
         try:
-            row_dt = datetime.strptime(cols[0], "%Y/%m/%d %H:%M:%S")
+            row_dt = datetime.strptime(cols[0], "%Y/%m/%d %H:%M:%S") #2025/06/10 00:31:27
             if abs(row_dt - target_datetime) <= time_tolerance:
                 temp_c_part = cols[8].split(" ")[0].strip() if " " in cols[8] else cols[8]
                 temp_c_clean = ''.join(c for c in temp_c_part if c.isdigit() or c == '.')
