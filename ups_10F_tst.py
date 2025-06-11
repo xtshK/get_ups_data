@@ -1,9 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-import os
-import csv
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime
 
 def get_html_content(url, username, password, target_date):
     response = requests.get(url, auth=(username, password))
@@ -55,14 +53,14 @@ if __name__ == "__main__":
     url = "http://172.21.2.13/DataLog.cgi"
     username = "admin"
     password = "misadmin"
-    target_date = "2025/06/10"
+    target_date = "2025/06/11"
 
     data = get_html_content(url, username, password, target_date)
 
     if data:
         
         print(f"✅ Total rows for {target_date}: {len(data)}")
-        for row in data[:30]:  # 預覽前 3 筆
+        for row in data[:3]:  # 預覽前 3 筆
             print(row)
     else:
         print("⚠ No data found.")
